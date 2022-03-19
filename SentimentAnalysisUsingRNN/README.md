@@ -9,4 +9,4 @@ Executed on Google Colab with GPU, with Python 3.8.5 and PyTorch 1.11.0
 
 
 
-## Final prediction on the Test dataset => Accuracy : 88.02 
+#### Final prediction on the Test dataset => Accuracy : 88.02 
