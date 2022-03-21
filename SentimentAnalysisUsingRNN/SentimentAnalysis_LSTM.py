@@ -24,15 +24,18 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 batch_size = 64
 MAX_LEN = 1000
 learning_rate = 0.001
- 
+
+# Mount Google Drive 
+# from google.colab import drive
+# drive.mount('/content/gdrive')
 # Load dataset  
-data_dir = "C:/Data/Imdb/archive"
+data_dir = "/content/gdrive/My Drive/Data/Imdb/archive"
 df = pd.read_csv(data_dir+"/IMDB Dataset.csv")
-df.head()   
+df.head() 
 
 X,y = df['review'].values,df['sentiment'].values
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, stratify=y_train)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, stratify=y)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.11111111, stratify=y_train)
 
 print(f'shape of train data is {X_train.shape}')
 print(f'shape of test data is {X_test.shape}')
@@ -48,7 +51,6 @@ def preprocess_string(s):
     s = re.sub(r"\d", '', s)
     # Convert to lower case
     s = s.lower()
-
     return s
 
 # Define the object for Lemmatization
@@ -58,6 +60,7 @@ def lemmatizer(text):
     lemm_text = [wordnet_lemmatizer.lemmatize(word) for word in text]
     return lemm_text
 
+# Download stopwords and wordnet
 nltk.download('stopwords')
 nltk.download('wordnet')
 
@@ -185,7 +188,7 @@ class SentimentLSTM(nn.Module):
         # Return last sigmoid output and hidden state
         return sig_out, hidden
              
-    # Initializes hidden state     
+    # Initialize hidden state     
     def init_hidden(self, batch_size):
         # Create two new tensors with sizes n_layers x batch_size x hidden_dim,
         # initialized to zero, for hidden state and cell state of LSTM
@@ -193,10 +196,10 @@ class SentimentLSTM(nn.Module):
         c0 = torch.zeros((self.no_layers,batch_size,self.hidden_dim)).to(device)
         hidden = (h0,c0)
         return hidden
-    
+
 no_layers = 2
 vocab_size = len(vocab) + 1 # Extra 1 for padding
-embedding_dim = 64
+embedding_dim = 256
 hidden_dim = 256
 drop_prob = 0.5
 # Create LSTM model
@@ -244,7 +247,7 @@ for epoch in range(epochs):
         # Calculating accuracy
         accuracy = acc(output,labels)
         train_acc += accuracy
-        # `clip_grad_norm` helps prevent the exploding gradient problem in RNNs / LSTMs.
+        # `clip_grad_norm` helps prevent the exploding gradient problem in RNNs/LSTMs.
         nn.utils.clip_grad_norm_(model.parameters(), clip)
         optimizer.step()
  
@@ -283,14 +286,14 @@ fig = plt.figure(figsize = (20, 6))
 plt.subplot(1, 2, 1)
 plt.plot(epoch_tr_acc, label='Train Acc')
 plt.plot(epoch_vl_acc, label='Validation Acc')
-plt.title("Accuracy")
+plt.title("The Accuracy Curve")
 plt.legend()
 plt.grid()
     
 plt.subplot(1, 2, 2)
 plt.plot(epoch_tr_loss, label='Train loss')
 plt.plot(epoch_vl_loss, label='Validation loss')
-plt.title("Loss")
+plt.title("The Loss Curve")
 plt.legend()
 plt.grid()
 
@@ -314,4 +317,3 @@ final_test_loss = np.mean(test_losses)
 final_test_acc = test_acc/len(test_loader.dataset)
 print(f'\nFinal prediction on the Test dataset => Accuracy : {final_test_acc*100}')
 
-    
