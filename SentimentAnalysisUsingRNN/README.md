@@ -7,6 +7,6 @@ Executed on Google Colab with GPU, with Python 3.7.12 and PyTorch 1.10.0
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; #### The Accuracy and Loss Curve
 
-![Plot6](https://user-images.githubusercontent.com/17172345/159133367-6eef34f9-eb67-4afd-9459-19857e1c28b5.png)  
+![Plot7](https://user-images.githubusercontent.com/17172345/159327953-5eabc4cd-e4fa-4b57-937e-ebdb61129630.png)
 
 #### Final prediction on the Test dataset => Accuracy : 88.24 
