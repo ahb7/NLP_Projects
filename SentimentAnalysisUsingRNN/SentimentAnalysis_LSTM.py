@@ -316,4 +316,3 @@ for inputs, labels in test_loader:
 final_test_loss = np.mean(test_losses)
 final_test_acc = test_acc/len(test_loader.dataset)
 print(f'\nFinal prediction on the Test dataset => Accuracy : {final_test_acc*100}')
-
